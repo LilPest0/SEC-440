@@ -2,32 +2,21 @@
 
 ## Overview
 
-This Python program demonstrates a simple file encryption and decryption tool using symmetric key cryptography. The program performs the following tasks:
+This Python script demonstrates a file encryption and decryption tool using asymmetric and symmetric cryptography. The program performs the following tasks:
 
-1. Generates a random symmetric key (`smem`) in memory.
-2. Encrypts `smem` and saves it to disk as `smem.enc`.
-3. Reads a target list of files to be encrypted from `target_list.txt`.
-4. Encrypts each file in the target list using `smem`, appends a `.enc` extension to the filename, and deletes the original file.
-5. Clears `smem` from memory.
-6. Decrypts the target list of files using `smem`.
+### Encryption on the Victim:
 
-The program is designed to work on both Windows and Linux systems and uses the PyCryptoDome library for encryption and decryption.
+1. **Symmetric Key Generation**: Generates or loads a symmetric key (`smem`).
+2. **RSA Key Pair Generation**: Generates or loads an RSA public-private key pair.
+3. **Symmetric Key Encryption**: Encrypts the symmetric key (`smem`) using the RSA public key and saves it as `smem-enc`.
+4. **File Encryption**: Encrypts files in a specified directory using the symmetric key (`smem`), appends a `.encrypted` extension to the filename, and deletes the original file.
 
-## Usage
+### Decryption on the Victim:
 
-1. Install the required library:
+1. **Symmetric Key Decryption**: Reads the encrypted symmetric key (`smem-enc`), decrypts it using the RSA private key to obtain `smem`.
+2. **File Decryption**: Decrypts encrypted files in the specified directory using `smem` and deletes the encrypted files.
 
-`pip install pycryptodome`
-
-
-2. Create a file named `target_list.txt` containing the list of files you want to encrypt.
-
-3. Run the `encrypt_decrypt.py` script:
-
-`python encrypt_decrypt.py`
-
-
-**Note:** Make sure to adjust the file paths and target list according to your requirements.
+**Note:** Make sure to adjust the file paths and target list according to your requirements.  Change the dir_path variable to the target directory where your files are located.
 
 ## Disclaimer
 
