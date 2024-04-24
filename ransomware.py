@@ -12,7 +12,7 @@ CONFIG = {
     'private_key_file': 'private_key.pem',
     'public_key_file': 'public_key.pem',
     'encrypted_file_extension': '.encrypted',
-    'target_directory': r'C:\Users\benji\Desktop\test',
+    'target_directory': r'C:\Users\benji-adm\Desktop\test',
     'delete_files_after_encryption': True,
     'perform_smem_decryption': False  # Set to True to enable decryption
     #'perform_smem_decryption': True 
